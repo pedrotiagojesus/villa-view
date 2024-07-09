@@ -1,0 +1,11 @@
+#section-login {
+    padding: var(--space-section) 0;
+}
+
+#section-login .block-wrap form > * {
+    margin-bottom: 0.75rem;
+}
+
+#section-login .block-wrap form > *:last-child {
+    margin-bottom: 0;
+}

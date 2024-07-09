@@ -1,0 +1,65 @@
+#section-contact-detail {
+    padding: var(--space-section) 0;
+}
+
+#section-contact-detail .title {
+    margin-bottom: 2.25rem;
+}
+
+#section-contact-detail form > div {
+    margin-bottom: 2rem;
+}
+
+#section-contact-detail .contact-data {
+    margin-bottom: 1.5rem;
+}
+
+#section-contact-detail .contact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#section-contact-detail .contact-list .icon {
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+}
+
+#section-contact-detail .social-network {
+    font-size: 5rem;
+    text-align: center;
+    --bs-gutter-y: 1.5rem;
+}
+
+#section-contact-detail .social-network a {
+    opacity: 0.5;
+    --bs-link-color-rgb: 179, 71, 0;
+    --bs-link-hover-color-rgb: 179, 71, 0;
+}
+
+#section-contact-detail .social-network a:hover {
+    opacity: 1;
+}
+
+#section-contact-text {
+    background-color: #ff8c19;
+    color: #fff;
+    padding-top: 7.5rem;
+    padding-bottom: 7.5rem;
+}
+
+#section-contact-text h1 {
+    margin-bottom: 3rem;
+}
+
+#section-contact-text p {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+#section-contact-text p:last-child {
+    margin-bottom: 0;
+}

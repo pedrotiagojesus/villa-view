@@ -1,0 +1,13 @@
+#section-about-us {
+    padding: var(--space-section) 0;
+}
+
+#section-about-us .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+#section-about-us .container > div {
+    gap: 2rem;
+}

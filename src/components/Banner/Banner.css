@@ -1,0 +1,38 @@
+#banner {
+    height: calc(25vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-shadow: 0 0 4px #000;
+    background-size: cover;
+    background-position: top;
+    text-align: center;
+}
+
+/* SM */
+
+@media (width >= 576px) {
+}
+
+/* MD */
+
+@media (width >= 768px) {
+}
+
+/* LG  */
+
+@media (width >= 992px) {
+    #banner {
+        height: calc(50vh - var(--header-height));
+    }
+}
+
+/* XL */
+
+@media (width >= 1200px) {
+}
+
+/* XL */
+
+@media (width >= 1400px) {
+}

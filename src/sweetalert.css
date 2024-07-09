@@ -1,0 +1,7 @@
+.swal2-actions {
+    gap: 1rem;
+}
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+    border-radius: 0 !important;
+}

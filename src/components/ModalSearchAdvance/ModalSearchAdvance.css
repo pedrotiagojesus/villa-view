@@ -1,0 +1,13 @@
+#modal-search-advance {
+    --bs-modal-border-radius: 0;
+    --bs-modal-header-border-width: 0;
+    --bs-modal-footer-border-width: 0;
+}
+
+#modal-search-advance .modal-title {
+    font-size: 1.5rem;
+}
+
+#modal-search-advance .row {
+    --bs-gutter-y: 1rem;
+}

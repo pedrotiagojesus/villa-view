@@ -1,0 +1,102 @@
+#section-property-data {
+    padding: var(--space-section) 0;
+}
+
+#section-property-data .property-name {
+    font-size: 2rem;
+}
+
+#section-property-data .reference {
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+
+#section-property-data .reference span {
+    font-family: monospace;
+}
+
+#section-property-data .situation {
+    --bs-badge-padding-x: 0.85rem;
+    --bs-badge-padding-y: 0.45rem;
+    --bs-badge-font-weight: 500;
+    --bs-badge-border-radius: 0;
+
+    background-color: #6c757d;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+#section-property-data .address {
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+#section-property-data .address .icon {
+    margin-right: 0.5rem;
+}
+
+#section-property-data .price {
+    font-size: 1.875rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+#section-property-data .gallery {
+    margin-bottom: 1.5rem;
+}
+
+#section-property-data .property-detail {
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+}
+
+#section-property-data .property-detail h5 {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+#section-property-data .property-detail iframe {
+    max-width: 100%;
+}
+
+#section-property-data .property-detail .row {
+    --bs-gutter-y: 1.5rem;
+}
+
+#section-property-data .block-wrap.form {
+    padding: 1.875rem;
+}
+
+#section-property-data .block-wrap.form form > * {
+    margin-bottom: 0.75rem;
+}
+
+#section-property-data .block-wrap.form form > *:last-child {
+    margin-bottom: 0;
+}
+
+/* SM */
+
+@media (width >= 576px) {
+}
+
+/* MD */
+
+@media (width >= 768px) {
+}
+
+/* LG  */
+
+@media (width >= 992px) {
+}
+
+/* XL */
+
+@media (width >= 1200px) {
+}
+
+/* XL */
+
+@media (width >= 1400px) {
+}

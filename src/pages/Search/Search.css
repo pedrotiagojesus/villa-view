@@ -1,0 +1,9 @@
+#section-list-property {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+#section-list-property .row {
+    --bs-gutter-x: 2rem;
+    --bs-gutter-y: 2rem;
+}
