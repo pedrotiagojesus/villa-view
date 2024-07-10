@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 // CSS
 import "./ModalSearchAdvance.css";
@@ -11,46 +11,139 @@ import { useFetchAllCounty } from "../../hooks/useFetchAllCounty";
 import { useFetchAllParish } from "../../hooks/useFetchAllParish";
 import { useFetchAllPropertyGoal } from "../../hooks/useFetchAllPropertyGoal";
 import { useFetchAllPropertyStatus } from "../../hooks/useFetchAllPropertyStatus";
+import useBuildQueryString from "../../hooks/utils/useBuildQueryString";
 
 const ModalSearchAdvance = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
-    const [priceMin, setPriceMin] = useState(0);
-    const [priceMax, setPriceMax] = useState(0);
-    const [districtId, setDistrictId] = useState(0);
-    const [countyId, setCountyId] = useState(0);
-    const [parishId, setParishId] = useState(0);
-    const [typeId, setTypeId] = useState(0);
-    const [room, setRoom] = useState(0);
-    const [goalId, setGoalId] = useState(0);
-    const [stateId, setStateId] = useState(0);
+    let urlPriceMin = Number(searchParams.get("price_min"));
+    let urlPriceMax = Number(searchParams.get("price_max"));
+    let urlDistrictId = Number(searchParams.get("district_id"));
+    let urlCountyId = Number(searchParams.get("county_id"));
+    let urlParishId = Number(searchParams.get("parish_id"));
+    let urlPropertyTypeId = Number(searchParams.get("property_type_id"));
+    let urlPropertyGoalId = Number(searchParams.get("property_goal_id"));
+    let urlPropertyStatusId = Number(searchParams.get("property_status_id"));
+    let urlRoom = Number(searchParams.get("room"));
+
+    const [priceMin, setPriceMin] = useState(urlPriceMin);
+    const [priceMax, setPriceMax] = useState(urlPriceMax);
+    const [districtId, setDistrictId] = useState(urlDistrictId);
+    const [countyId, setCountyId] = useState(urlCountyId);
+    const [parishId, setParishId] = useState(urlParishId);
+    const [propertyTypeId, setPropertyTypeId] = useState(urlPropertyTypeId);
+    const [room, setRoom] = useState(urlRoom);
+    const [propertyGoalId, setPropertyGoalId] = useState(urlPropertyGoalId);
+    const [propertyStatusId, setPropertyStatusId] =
+        useState(urlPropertyStatusId);
 
     const closeRef = useRef();
 
-    // Submit search form
-    const handleSearch = (e) => {
-        e.preventDefault();
-
-        // console.log(priceMin);
-        // console.log(priceMax);
-        // console.log(districtId);
-        //console.log(countyId);
-        // console.log(typeId);
-        // console.log(roomId);
-        // console.log(goalId);
-        // console.log(stateId);
-
-        navigate("/villa-view/search");
-        closeRef.current.click();
-    };
-
     const { districtArr } = useFetchAllDistrict();
+
     const { countyArr } = useFetchAllCounty(districtId);
     const { parishArr } = useFetchAllParish(countyId);
 
     const { propertyTypeArr } = useFetchAllPropertyType();
     const { propertyGoalArr } = useFetchAllPropertyGoal();
     const { propertyStatusArr } = useFetchAllPropertyStatus();
+
+    useEffect(() => {
+        setPriceMin(urlPriceMin);
+        setPriceMax(urlPriceMax);
+        setDistrictId(urlDistrictId);
+        setCountyId(urlCountyId);
+        setParishId(urlParishId);
+        setPropertyTypeId(urlPropertyTypeId);
+        setRoom(urlRoom);
+        setPropertyGoalId(urlPropertyGoalId);
+        setPropertyStatusId(urlPropertyStatusId);
+    }, [
+        urlPriceMin,
+        urlPriceMax,
+        urlDistrictId,
+        urlCountyId,
+        urlParishId,
+        urlPropertyTypeId,
+        urlPropertyGoalId,
+        urlPropertyStatusId,
+        urlRoom,
+    ]);
+
+    // Submit search form
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        let queryString = "";
+        if (priceMax != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "price_min",
+                priceMin
+            );
+            queryString = useBuildQueryString(
+                queryString,
+                "price_max",
+                priceMax
+            );
+        }
+
+        if (districtId != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "district_id",
+                districtId
+            );
+        }
+
+        if (countyId != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "county_id",
+                countyId
+            );
+        }
+
+        if (parishId != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "parish_id",
+                parishId
+            );
+        }
+
+        if (propertyTypeId != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "property_type_id",
+                propertyTypeId
+            );
+        }
+
+        if (room != 0) {
+            queryString = useBuildQueryString(queryString, "room", room);
+        }
+
+        if (propertyGoalId != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "property_goal_id",
+                propertyGoalId
+            );
+        }
+
+        if (propertyStatusId != 0) {
+            queryString = useBuildQueryString(
+                queryString,
+                "property_status_id",
+                propertyStatusId
+            );
+        }
+
+        navigate(`/villa-view/search${queryString}`);
+        closeRef.current.click();
+    };
 
     return (
         <div className="modal fade" id="modal-search-advance" tabIndex="-1">
@@ -72,7 +165,7 @@ const ModalSearchAdvance = () => {
                         <div className="row">
                             <div className="col-md-6">
                                 <label className="form-label">
-                                    Preço Minimo
+                                    Preço Mínimo
                                 </label>
                                 <input
                                     type="number"
@@ -105,7 +198,7 @@ const ModalSearchAdvance = () => {
                                         setDistrictId(Number(e.target.value))
                                     }
                                 >
-                                    <option value="0" disabled></option>
+                                    <option value="0"></option>
                                     {districtArr &&
                                         districtArr.map((district) => (
                                             <option
@@ -133,7 +226,7 @@ const ModalSearchAdvance = () => {
                                     }
                                     disabled={districtId != 0 ? "" : "disabled"}
                                 >
-                                    <option value="0" disabled>
+                                    <option value="0">
                                         {districtId != 0
                                             ? ""
                                             : "Selecione um distrito primeiro"}
@@ -166,7 +259,7 @@ const ModalSearchAdvance = () => {
                                     }
                                     disabled={countyId != 0 ? "" : "disabled"}
                                 >
-                                    <option value="0" disabled>
+                                    <option value="0">
                                         {countyId != 0
                                             ? ""
                                             : "Selecione um concelho primeiro"}
@@ -188,9 +281,11 @@ const ModalSearchAdvance = () => {
                                 <label className="form-label">Tipo</label>
                                 <select
                                     className="form-select"
-                                    value={typeId}
+                                    value={propertyTypeId}
                                     onChange={(e) =>
-                                        setTypeId(Number(e.target.value))
+                                        setPropertyTypeId(
+                                            Number(e.target.value)
+                                        )
                                     }
                                 >
                                     <option value=""></option>
@@ -230,13 +325,25 @@ const ModalSearchAdvance = () => {
                                 <label className="form-label">Objectivo</label>
                                 <select
                                     className="form-select"
-                                    value={goalId}
-                                    onChange={(e) => setGoalId(e.target.value)}
+                                    value={propertyGoalId}
+                                    onChange={(e) =>
+                                        setPropertyGoalId(e.target.value)
+                                    }
                                 >
-                                    <option value="0">Objectivo...</option>
-                                    <option value="1">Comprar</option>
-                                    <option value="2">Arrendar</option>
-                                    <option value="3">Trespasse</option>
+                                    <option value=""></option>
+                                    {propertyGoalArr &&
+                                        propertyGoalArr.map((propertyGoal) => (
+                                            <option
+                                                key={
+                                                    propertyGoal.property_goal_id
+                                                }
+                                                value={
+                                                    propertyGoal.property_goal_id
+                                                }
+                                            >
+                                                {propertyGoal.name}
+                                            </option>
+                                        ))}
                                 </select>
                             </div>
 
@@ -244,15 +351,27 @@ const ModalSearchAdvance = () => {
                                 <label className="form-label">Estado</label>
                                 <select
                                     className="form-select"
-                                    value={stateId}
-                                    onChange={(e) => setStateId(e.target.value)}
+                                    value={propertyStatusId}
+                                    onChange={(e) =>
+                                        setPropertyStatusId(e.target.value)
+                                    }
                                 >
-                                    <option value="0">Estado...</option>
-                                    <option value="1">Novo</option>
-                                    <option value="2">Usado</option>
-                                    <option value="3">Em Construção</option>
-                                    <option value="4">Para Remodelar</option>
-                                    <option value="5">Remodelado</option>
+                                    <option value=""></option>
+                                    {propertyStatusArr &&
+                                        propertyStatusArr.map(
+                                            (propertyStatus) => (
+                                                <option
+                                                    key={
+                                                        propertyStatus.property_status_id
+                                                    }
+                                                    value={
+                                                        propertyStatus.property_status_id
+                                                    }
+                                                >
+                                                    {propertyStatus.name}
+                                                </option>
+                                            )
+                                        )}
                                 </select>
                             </div>
                         </div>
