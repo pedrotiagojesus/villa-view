@@ -21,9 +21,9 @@ import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 
 const WantToSell = () => {
-    const [name, setName] = useState("Teste");
-    const [email, setEmail] = useState("teste@teste.com");
-    const [contact, setContact] = useState("teste");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [contact, setContact] = useState("");
     const [constructionYear, setConstructionYear] = useState(0);
     const [room, setRoom] = useState(0);
     const [price, setPrice] = useState(0);
