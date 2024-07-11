@@ -127,11 +127,7 @@ const Property = () => {
                                             </div>
                                             <div className="col-sm-6 col-md-4 col-lg-3">
                                                 <h5>Tipo de imóvel</h5>
-                                                <p>
-                                                    {
-                                                        property.property_type_name
-                                                    }
-                                                </p>
+                                                {property.property_type_name}
                                             </div>
                                             <div className="col-sm-6 col-md-4 col-lg-3">
                                                 <h5>Objetivo</h5>
@@ -147,10 +143,13 @@ const Property = () => {
                                                     property={property}
                                                 />
                                             </div>
-                                            <div className="col-sm-6 col-md-4 col-lg-3">
-                                                <h5>Ano de Construção</h5>
-                                                {property.construction_year}
-                                            </div>
+                                            {property.construction_year !=
+                                                "" && (
+                                                <div className="col-sm-6 col-md-4 col-lg-3">
+                                                    <h5>Ano de Construção</h5>
+                                                    {property.construction_year}
+                                                </div>
+                                            )}
                                             <div className="col-sm-6 col-md-4 col-lg-3">
                                                 <h5>Nº de quartos</h5>
                                                 {property.room}
