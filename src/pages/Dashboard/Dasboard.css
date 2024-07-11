@@ -1,3 +1,7 @@
 #section-backoffice-dashboard {
     padding: var(--space-section) 0;
 }
+
+#section-backoffice-dashboard .main-row {
+    --bs-gutter-y: 1.5rem;
+}

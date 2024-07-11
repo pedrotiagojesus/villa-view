@@ -1,5 +1,5 @@
 // Firebase
-import { db, storage } from "../firebase/config";
+import { db, storage } from "../../firebase/config";
 import { doc, updateDoc } from "firebase/firestore";
 import {
     getStorage,

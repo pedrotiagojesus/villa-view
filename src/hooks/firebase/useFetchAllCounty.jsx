@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase/config";
+
+// Firebase
+import { db } from "../../firebase/config";
 import {
     collection,
     query,
@@ -7,10 +9,12 @@ import {
     onSnapshot,
     where,
 } from "firebase/firestore";
-import { useMemoryLeak } from "./useMemoryLeak";
 
-export const useFetchAllCounty = (district_id = null) => {
-    const [countyArr, setCountyArr] = useState(null);
+// Hooks
+import { useMemoryLeak } from "../useMemoryLeak";
+
+export const useFetchAllCounty = (district_id = 0) => {
+    const [rowArr, setRowArr] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
@@ -23,8 +27,12 @@ export const useFetchAllCounty = (district_id = null) => {
                 return;
             }
 
-            setLoading(true);
+            if (district_id === 0) {
+                setRowArr([]);
+                return;
+            }
 
+            setLoading(true);
             const collectionRef = await collection(db, "county");
 
             try {
@@ -35,7 +43,7 @@ export const useFetchAllCounty = (district_id = null) => {
                 );
 
                 await onSnapshot(q, (querySnapshot) => {
-                    setCountyArr(
+                    setRowArr(
                         querySnapshot.docs.map((doc) => ({
                             id: doc.id,
                             ...doc.data(),
@@ -44,13 +52,14 @@ export const useFetchAllCounty = (district_id = null) => {
                 });
             } catch (error) {
                 setError(error.message);
+                console.log(error);
             }
 
             setLoading(false);
         }
 
         loadData();
-    }, [district_id, cancelled]);
+    }, [cancelled, district_id]);
 
-    return { countyArr, loading, error };
+    return { rowArr, loading, error };
 };

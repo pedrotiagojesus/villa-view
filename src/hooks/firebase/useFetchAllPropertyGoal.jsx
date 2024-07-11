@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase/config";
-import {
-    collection,
-    query,
-    orderBy,
-    onSnapshot,
-    where,
-} from "firebase/firestore";
-import { useMemoryLeak } from "./useMemoryLeak";
 
-export const useFetchAllPropertyType = () => {
-    const [propertyTypeArr, setPropertyTypeArr] = useState(null);
+// Firebase
+import { db } from "../../firebase/config";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+
+// Hooks
+import { useMemoryLeak } from "../useMemoryLeak";
+
+export const useFetchAllPropertyGoal = () => {
+    const [rowArr, setRowArr] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
@@ -24,13 +22,13 @@ export const useFetchAllPropertyType = () => {
             }
 
             setLoading(true);
-            const collectionRef = await collection(db, "property_type");
+            const collectionRef = await collection(db, "property_goal");
 
             try {
                 let q = await query(collectionRef, orderBy("name", "asc"));
 
                 await onSnapshot(q, (querySnapshot) => {
-                    setPropertyTypeArr(
+                    setRowArr(
                         querySnapshot.docs.map((doc) => ({
                             id: doc.id,
                             ...doc.data(),
@@ -47,5 +45,5 @@ export const useFetchAllPropertyType = () => {
         loadData();
     }, [cancelled]);
 
-    return { propertyTypeArr, loading, error };
+    return { rowArr, loading, error };
 };

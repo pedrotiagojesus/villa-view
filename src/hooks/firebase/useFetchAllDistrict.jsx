@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase/config";
+
+// Firebase
+import { db } from "../../firebase/config";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import { useMemoryLeak } from "./useMemoryLeak";
+
+// Hooks
+import { useMemoryLeak } from "../useMemoryLeak";
 
 export const useFetchAllDistrict = () => {
-    const [districtArr, setDistrictArr] = useState(null);
+    const [rowArr, setRowArr] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
@@ -24,7 +28,7 @@ export const useFetchAllDistrict = () => {
                 let q = await query(collectionRef, orderBy("name", "asc"));
 
                 await onSnapshot(q, (querySnapshot) => {
-                    setDistrictArr(
+                    setRowArr(
                         querySnapshot.docs.map((doc) => ({
                             id: doc.id,
                             ...doc.data(),
@@ -41,5 +45,5 @@ export const useFetchAllDistrict = () => {
         loadData();
     }, [cancelled]);
 
-    return { districtArr, loading, error };
+    return { rowArr, loading, error };
 };

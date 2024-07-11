@@ -5,14 +5,15 @@ import "./WantToSell.css";
 
 // Components
 import Banner from "../../components/Banner/Banner";
+import ThemeSelectBox from "../../components/ThemeSelectBox";
 
 // Hooks
-import { useFetchAllPropertyType } from "../../hooks/useFetchAllPropertyType";
-import { useFetchAllDistrict } from "../../hooks/useFetchAllDistrict";
-import { useFetchAllCounty } from "../../hooks/useFetchAllCounty";
-import { useFetchAllParish } from "../../hooks/useFetchAllParish";
-import { useFetchAllPropertyGoal } from "../../hooks/useFetchAllPropertyGoal";
-import { useFetchAllPropertyStatus } from "../../hooks/useFetchAllPropertyStatus";
+import { useSelectPropertyType } from "../../hooks/useSelectPropertyType";
+import { useSelectPropertyGoal } from "../../hooks/useSelectPropertyGoal";
+import { useSelectPropertyStatus } from "../../hooks/useSelectPropertyStatus";
+import { useSelectDristrict } from "../../hooks/useSelectDistrict";
+import { useSelectCounty } from "../../hooks/useSelectCounty";
+import { useSelectParish } from "../../hooks/useSelectParish";
 
 // Sweetalert 2
 import Swal from "sweetalert2";
@@ -32,19 +33,27 @@ const WantToSell = () => {
     // District
     const [districtId, setDistrictId] = useState(0);
     const [districtName, setDistrictName] = useState("");
-    const { districtArr } = useFetchAllDistrict();
-    const handleDistrict = (id) => {
-        setDistrictId(id);
+    const { optionArr: districtArr } = useSelectDristrict();
+    const handleDistrict = (value) => {
+        setDistrictId(value);
 
-        if (id === 0) {
+        // Reset county data
+        setCountyId(0);
+        setCountyName("");
+
+        // Reset parish data
+        setParishId(0);
+        setParishName("");
+
+        if (value === 0) {
             setDistrictName("");
         } else {
             const district = districtArr.find(
-                (district) => district.district_id === id
+                (district) => district.value === value
             );
 
             if (district) {
-                setDistrictName(district.name);
+                setDistrictName(district.label);
             }
         }
     };
@@ -52,17 +61,21 @@ const WantToSell = () => {
     // County
     const [countyId, setCountyId] = useState(0);
     const [countyName, setCountyName] = useState("");
-    const { countyArr } = useFetchAllCounty(districtId);
-    const handleCounty = (id) => {
-        setCountyId(id);
+    const { optionArr: countyArr } = useSelectCounty(districtId);
+    const handleCounty = (value) => {
+        setCountyId(value);
 
-        if (id === 0) {
+        // Reset parish data
+        setParishId(0);
+        setParishName("");
+
+        if (value === 0) {
             setCountyName("");
         } else {
-            const county = countyArr.find((county) => county.county_id === id);
+            const county = countyArr.find((county) => county.value === value);
 
             if (county) {
-                setCountyName(county.name);
+                setCountyName(county.label);
             }
         }
     };
@@ -70,17 +83,17 @@ const WantToSell = () => {
     // Parish
     const [parishId, setParishId] = useState(0);
     const [parishName, setParishName] = useState("");
-    const { parishArr } = useFetchAllParish(countyId);
-    const handleParish = (id) => {
-        setParishId(id);
+    const { optionArr: parishArr } = useSelectParish(countyId);
+    const handleParish = (value) => {
+        setParishId(value);
 
-        if (id === 0) {
+        if (value === 0) {
             setParishName("");
         } else {
-            const parish = parishArr.find((parish) => parish.parish_id === id);
+            const parish = parishArr.find((parish) => parish.value === value);
 
             if (parish) {
-                setParishName(parish.name);
+                setParishName(parish.label);
             }
         }
     };
@@ -88,19 +101,19 @@ const WantToSell = () => {
     // Property type
     const [propertyTypeId, setPropertyTypeId] = useState(0);
     const [propertyTypeName, setPropertyTypeName] = useState("");
-    const { propertyTypeArr } = useFetchAllPropertyType();
-    const handlePropertyType = (id) => {
-        setPropertyTypeId(id);
+    const { optionArr: propertyTypeArr } = useSelectPropertyType();
+    const handlePropertyType = (value) => {
+        setPropertyTypeId(value);
 
-        if (id === 0) {
+        if (propertyTypeId === 0) {
             setPropertyTypeName("");
         } else {
             const propertyType = propertyTypeArr.find(
-                (propertyType) => propertyType.property_type_id === id
+                (propertyType) => propertyType.value === value
             );
 
             if (propertyType) {
-                setPropertyTypeName(propertyType.name);
+                setPropertyTypeName(propertyType.label);
             }
         }
     };
@@ -108,19 +121,19 @@ const WantToSell = () => {
     // Property goal
     const [propertyGoalId, setPropertyGoalId] = useState(0);
     const [propertyGoalName, setPropertyGoalName] = useState("");
-    const { propertyGoalArr } = useFetchAllPropertyGoal();
-    const handlePropertyGoal = (id) => {
-        setPropertyGoalId(id);
+    const { optionArr: propertyGoalArr } = useSelectPropertyGoal();
+    const handlePropertyGoal = (value) => {
+        setPropertyGoalId(value);
 
-        if (id === 0) {
+        if (value === 0) {
             setPropertyGoalName("");
         } else {
             const propertyGoal = propertyGoalArr.find(
-                (propertyGoal) => propertyGoal.property_goal_id === id
+                (propertyGoal) => propertyGoal.value === value
             );
 
             if (propertyGoal) {
-                setPropertyGoalName(propertyGoal.name);
+                setPropertyGoalName(propertyGoal.label);
             }
         }
     };
@@ -128,19 +141,19 @@ const WantToSell = () => {
     // Property status
     const [propertyStatusId, setPropertyStatusId] = useState(0);
     const [propertyStatusName, setPropertyStatusName] = useState("");
-    const { propertyStatusArr } = useFetchAllPropertyStatus();
-    const handlePropertyStatus = (id) => {
-        setPropertyStatusId(id);
+    const { optionArr: propertyStatusArr } = useSelectPropertyStatus();
+    const handlePropertyStatus = (value) => {
+        setPropertyStatusId(value);
 
-        if (id === 0) {
+        if (value === 0) {
             setPropertyStatusName("");
         } else {
             const propertyStatus = propertyStatusArr.find(
-                (propertyStatus) => propertyStatus.property_status_id === id
+                (propertyStatus) => propertyStatus.value === value
             );
 
             if (propertyStatus) {
-                setPropertyStatusName(propertyStatus.name);
+                setPropertyStatusName(propertyStatus.label);
             }
         }
     };
@@ -225,34 +238,16 @@ const WantToSell = () => {
                         <h3 className="block-header">Dados do Imóvel</h3>
                         <div className="row">
                             <div className="col-md-6 col-lg-4">
-                                <label className="form-label">
-                                    Tipo de imóvel
-                                </label>
-                                <select
-                                    className="form-select"
-                                    required
+                                <ThemeSelectBox
+                                    label="Tipo de imóvel"
                                     value={propertyTypeId}
-                                    onChange={(e) =>
-                                        handlePropertyType(
-                                            Number(e.target.value)
-                                        )
+                                    required={true}
+                                    handleChange={(value) =>
+                                        handlePropertyType(Number(value))
                                     }
-                                >
-                                    <option value=""></option>
-                                    {propertyTypeArr &&
-                                        propertyTypeArr.map((propertyType) => (
-                                            <option
-                                                key={
-                                                    propertyType.property_type_id
-                                                }
-                                                value={
-                                                    propertyType.property_type_id
-                                                }
-                                            >
-                                                {propertyType.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                    optionArr={propertyTypeArr}
+                                    keyPrefix="property-type"
+                                />
                                 <input
                                     type="hidden"
                                     name="property_type_name"
@@ -275,32 +270,14 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <label className="form-label">Objetivo</label>
-                                <select
-                                    className="form-select"
-                                    required
+                                <ThemeSelectBox
+                                    label="Objetivo"
                                     value={propertyGoalId}
-                                    onChange={(e) =>
-                                        handlePropertyGoal(
-                                            Number(e.target.value)
-                                        )
-                                    }
-                                >
-                                    <option value=""></option>
-                                    {propertyGoalArr &&
-                                        propertyGoalArr.map((propertyGoal) => (
-                                            <option
-                                                key={
-                                                    propertyGoal.property_goal_id
-                                                }
-                                                value={
-                                                    propertyGoal.property_goal_id
-                                                }
-                                            >
-                                                {propertyGoal.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                    required={true}
+                                    handleChange={handlePropertyGoal}
+                                    optionArr={propertyGoalArr}
+                                    keyPrefix="property-goal"
+                                />
                                 <input
                                     type="hidden"
                                     name="property_goal_name"
@@ -308,34 +285,16 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <label className="form-label">Estado</label>
-                                <select
-                                    className="form-select"
-                                    required
+                                <ThemeSelectBox
+                                    label="Estado"
                                     value={propertyStatusId}
-                                    onChange={(e) =>
-                                        handlePropertyStatus(
-                                            Number(e.target.value)
-                                        )
+                                    required={true}
+                                    handleChange={(value) =>
+                                        handlePropertyStatus(Number(value))
                                     }
-                                >
-                                    <option value=""></option>
-                                    {propertyStatusArr &&
-                                        propertyStatusArr.map(
-                                            (propertyStatus) => (
-                                                <option
-                                                    key={
-                                                        propertyStatus.property_status_id
-                                                    }
-                                                    value={
-                                                        propertyStatus.property_status_id
-                                                    }
-                                                >
-                                                    {propertyStatus.name}
-                                                </option>
-                                            )
-                                        )}
-                                </select>
+                                    optionArr={propertyStatusArr}
+                                    keyPrefix="property-status"
+                                />
                                 <input
                                     type="hidden"
                                     name="property_status_name"
@@ -371,26 +330,16 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <label className="form-label">Distrito</label>
-                                <select
-                                    className="form-select"
-                                    required
+                                <ThemeSelectBox
+                                    label="Distrito"
                                     value={districtId}
-                                    onChange={(e) =>
-                                        handleDistrict(Number(e.target.value))
+                                    required={true}
+                                    handleChange={(value) =>
+                                        handleDistrict(Number(value))
                                     }
-                                >
-                                    <option value=""></option>
-                                    {districtArr &&
-                                        districtArr.map((district) => (
-                                            <option
-                                                key={district.district_id}
-                                                value={district.district_id}
-                                            >
-                                                {district.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                    optionArr={districtArr}
+                                    keyPrefix="district"
+                                />
                                 <input
                                     type="hidden"
                                     name="district_name"
@@ -398,37 +347,27 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <label className="form-label">Concelho</label>
-                                <select
-                                    className="form-select"
-                                    required
+                                <ThemeSelectBox
+                                    label="Concelho"
                                     value={countyId}
-                                    onChange={(e) =>
-                                        handleCounty(Number(e.target.value))
+                                    required={true}
+                                    handleChange={(value) =>
+                                        handleCounty(Number(value))
                                     }
+                                    optionArr={countyArr}
+                                    keyPrefix="county"
                                     title={
                                         districtId != 0
                                             ? ""
                                             : "Selecione um distrito primeiro"
                                     }
-                                    disabled={districtId != 0 ? "" : "disabled"}
-                                >
-                                    <option value="">
-                                        {districtId != 0
+                                    disabled={districtId === 0}
+                                    defaultOptionLabel={
+                                        districtId != 0
                                             ? ""
-                                            : "Selecione um distrito primeiro"}
-                                    </option>
-
-                                    {countyArr &&
-                                        countyArr.map((county) => (
-                                            <option
-                                                key={county.county_id}
-                                                value={county.county_id}
-                                            >
-                                                {county.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                            : "Selecione um distrito primeiro"
+                                    }
+                                />
                                 <input
                                     type="hidden"
                                     name="county_name"
@@ -436,36 +375,27 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <label className="form-label">Freguesia</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Freguesia"
                                     value={parishId}
-                                    onChange={(e) =>
-                                        handleParish(Number(e.target.value))
+                                    required={false}
+                                    handleChange={(value) =>
+                                        handleParish(Number(value))
                                     }
+                                    optionArr={parishArr}
+                                    keyPrefix="county"
                                     title={
                                         countyId != 0
                                             ? ""
                                             : "Selecione um concelho primeiro"
                                     }
-                                    disabled={countyId != 0 ? "" : "disabled"}
-                                >
-                                    <option value="">
-                                        {countyId != 0
+                                    disabled={countyId === 0}
+                                    defaultOptionLabel={
+                                        countyId != 0
                                             ? ""
-                                            : "Selecione um concelho primeiro"}
-                                    </option>
-
-                                    {parishArr &&
-                                        parishArr.map((parish) => (
-                                            <option
-                                                key={parish.parish_id}
-                                                value={parish.parish_id}
-                                            >
-                                                {parish.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                            : "Selecione um concelho primeiro"
+                                    }
+                                />
                                 <input
                                     type="hidden"
                                     name="parish_name"

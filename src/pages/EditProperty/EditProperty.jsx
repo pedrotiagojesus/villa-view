@@ -10,7 +10,7 @@ import FormProperty from "../../components/FormProperty/FormProperty";
 import Loader from "../../components/Loader/Loader";
 
 // Hooks
-import { useFetchProperty } from "../../hooks/useFetchProperty";
+import { useFetchProperty } from "../../hooks/firebase/useFetchProperty";
 
 const EditProperty = () => {
     const { property_id } = useParams();
@@ -28,7 +28,7 @@ const EditProperty = () => {
             <Banner title="Editar imóvel" />
             <section id="section-backoffice-dashboard">
                 <div className="container">
-                    <div className="row">
+                    <div className="row main-row">
                         <div className="col-md-3">
                             <BackofficeNavigation />
                         </div>

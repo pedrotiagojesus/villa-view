@@ -12,8 +12,8 @@ import BackofficeNavigation from "../../components/BackofficeNavigation/Backoffi
 import PropertyAddress from "../../components/PropertyAddress";
 
 // Hooks
-import { useFetchAllProperty } from "../../hooks/useFetchAllProperty";
-import { useDeleteProperty } from "../../hooks/useDeleteProperty";
+import { useFetchAllProperty } from "../../hooks/firebase/useFetchAllProperty";
+import { useDeleteProperty } from "../../hooks/firebase/useDeleteProperty";
 
 const Dasboard = () => {
     // Data
@@ -58,7 +58,7 @@ const Dasboard = () => {
             <Banner title="Dasboard de backoffice" />
             <section id="section-backoffice-dashboard">
                 <div className="container">
-                    <div className="row">
+                    <div className="row main-row">
                         <div className="col-md-3">
                             <BackofficeNavigation />
                         </div>

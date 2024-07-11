@@ -5,13 +5,16 @@ import { useEffect, useRef, useState } from "react";
 import "./ModalSearchAdvance.css";
 
 // Hooks
-import { useFetchAllPropertyType } from "../../hooks/useFetchAllPropertyType";
-import { useFetchAllDistrict } from "../../hooks/useFetchAllDistrict";
-import { useFetchAllCounty } from "../../hooks/useFetchAllCounty";
-import { useFetchAllParish } from "../../hooks/useFetchAllParish";
-import { useFetchAllPropertyGoal } from "../../hooks/useFetchAllPropertyGoal";
-import { useFetchAllPropertyStatus } from "../../hooks/useFetchAllPropertyStatus";
+import { useSelectPropertyType } from "../../hooks/useSelectPropertyType";
+import { useSelectPropertyGoal } from "../../hooks/useSelectPropertyGoal";
+import { useSelectPropertyStatus } from "../../hooks/useSelectPropertyStatus";
+import { useSelectDristrict } from "../../hooks/useSelectDistrict";
+import { useSelectCounty } from "../../hooks/useSelectCounty";
+import { useSelectParish } from "../../hooks/useSelectParish";
 import useBuildQueryString from "../../hooks/utils/useBuildQueryString";
+
+// Components
+import ThemeSelectBox from "../ThemeSelectBox";
 
 const ModalSearchAdvance = () => {
     const navigate = useNavigate();
@@ -29,25 +32,47 @@ const ModalSearchAdvance = () => {
 
     const [priceMin, setPriceMin] = useState(urlPriceMin);
     const [priceMax, setPriceMax] = useState(urlPriceMax);
-    const [districtId, setDistrictId] = useState(urlDistrictId);
-    const [countyId, setCountyId] = useState(urlCountyId);
-    const [parishId, setParishId] = useState(urlParishId);
     const [propertyTypeId, setPropertyTypeId] = useState(urlPropertyTypeId);
     const [room, setRoom] = useState(urlRoom);
     const [propertyGoalId, setPropertyGoalId] = useState(urlPropertyGoalId);
     const [propertyStatusId, setPropertyStatusId] =
         useState(urlPropertyStatusId);
 
+    // District
+    const [districtId, setDistrictId] = useState(urlDistrictId);
+    const { optionArr: districtArr } = useSelectDristrict();
+    const handleDistrict = (value) => {
+        setDistrictId(value);
+
+        // Reset county data
+        setCountyId(0);
+
+        // Reset parish data
+        setParishId(0);
+    };
+
+    // County
+    const [countyId, setCountyId] = useState(urlCountyId);
+    const { optionArr: countyArr } = useSelectCounty(districtId);
+    const handleCounty = (value) => {
+        setCountyId(value);
+
+        // Reset parish data
+        setParishId(0);
+    };
+
+    // Parish
+    const [parishId, setParishId] = useState(urlParishId);
+    const { optionArr: parishArr } = useSelectParish(countyId);
+    const handleParish = (value) => {
+        setParishId(value);
+    };
+
     const closeRef = useRef();
 
-    const { districtArr } = useFetchAllDistrict();
-
-    const { countyArr } = useFetchAllCounty(districtId);
-    const { parishArr } = useFetchAllParish(countyId);
-
-    const { propertyTypeArr } = useFetchAllPropertyType();
-    const { propertyGoalArr } = useFetchAllPropertyGoal();
-    const { propertyStatusArr } = useFetchAllPropertyStatus();
+    const { optionArr: propertyTypeArr } = useSelectPropertyType();
+    const { optionArr: propertyGoalArr } = useSelectPropertyGoal();
+    const { optionArr: propertyStatusArr } = useSelectPropertyStatus();
 
     useEffect(() => {
         setPriceMin(urlPriceMin);
@@ -190,119 +215,75 @@ const ModalSearchAdvance = () => {
                             </div>
 
                             <div className="col-md-6">
-                                <label className="form-label">Distrito</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Distrito"
                                     value={districtId}
-                                    onChange={(e) =>
-                                        setDistrictId(Number(e.target.value))
-                                    }
-                                >
-                                    <option value="0"></option>
-                                    {districtArr &&
-                                        districtArr.map((district) => (
-                                            <option
-                                                key={district.district_id}
-                                                value={district.district_id}
-                                            >
-                                                {district.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                    required={false}
+                                    handleChange={(id) => {
+                                        handleDistrict(Number(id));
+                                    }}
+                                    optionArr={districtArr}
+                                />
                             </div>
 
                             <div className="col-md-6">
-                                <label className="form-label">Concelho</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Concelho"
                                     value={countyId}
-                                    onChange={(e) =>
-                                        setCountyId(Number(e.target.value))
-                                    }
+                                    required={true}
+                                    handleChange={(id) => {
+                                        handleCounty(Number(id));
+                                    }}
+                                    optionArr={countyArr}
+                                    keyPrefix="county"
                                     title={
                                         districtId != 0
                                             ? ""
                                             : "Selecione um distrito primeiro"
                                     }
-                                    disabled={districtId != 0 ? "" : "disabled"}
-                                >
-                                    <option value="0">
-                                        {districtId != 0
+                                    disabled={districtId === 0}
+                                    defaultOptionLabel={
+                                        districtId != 0
                                             ? ""
-                                            : "Selecione um distrito primeiro"}
-                                    </option>
-
-                                    {countyArr &&
-                                        countyArr.map((county) => (
-                                            <option
-                                                key={county.county_id}
-                                                value={county.county_id}
-                                            >
-                                                {county.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                            : "Selecione um distrito primeiro"
+                                    }
+                                />
                             </div>
 
                             <div className="col-md-6">
-                                <label className="form-label">Freguesia</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Freguesia"
                                     value={parishId}
-                                    onChange={(e) =>
-                                        setParishId(Number(e.target.value))
-                                    }
+                                    required={false}
+                                    handleChange={(id) => {
+                                        handleParish(Number(id));
+                                    }}
+                                    optionArr={parishArr}
+                                    keyPrefix="county"
                                     title={
                                         countyId != 0
                                             ? ""
                                             : "Selecione um concelho primeiro"
                                     }
-                                    disabled={countyId != 0 ? "" : "disabled"}
-                                >
-                                    <option value="0">
-                                        {countyId != 0
+                                    disabled={countyId === 0}
+                                    defaultOptionLabel={
+                                        countyId != 0
                                             ? ""
-                                            : "Selecione um concelho primeiro"}
-                                    </option>
-
-                                    {parishArr &&
-                                        parishArr.map((parish) => (
-                                            <option
-                                                key={parish.parish_id}
-                                                value={parish.parish_id}
-                                            >
-                                                {parish.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                            : "Selecione um concelho primeiro"
+                                    }
+                                />
                             </div>
 
                             <div className="col-md-6">
-                                <label className="form-label">Tipo</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Tipo de imóvel"
                                     value={propertyTypeId}
-                                    onChange={(e) =>
-                                        setPropertyTypeId(
-                                            Number(e.target.value)
-                                        )
-                                    }
-                                >
-                                    <option value=""></option>
-                                    {propertyTypeArr &&
-                                        propertyTypeArr.map((propertyType) => (
-                                            <option
-                                                key={
-                                                    propertyType.property_type_id
-                                                }
-                                                value={
-                                                    propertyType.property_type_id
-                                                }
-                                            >
-                                                {propertyType.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                    required={true}
+                                    handleChange={(id) => {
+                                        setPropertyTypeId(Number(id));
+                                    }}
+                                    optionArr={propertyTypeArr}
+                                />
                             </div>
 
                             <div className="col-md-6">
@@ -322,57 +303,27 @@ const ModalSearchAdvance = () => {
                             </div>
 
                             <div className="col-md-6">
-                                <label className="form-label">Objectivo</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Objectivo"
                                     value={propertyGoalId}
-                                    onChange={(e) =>
-                                        setPropertyGoalId(e.target.value)
-                                    }
-                                >
-                                    <option value=""></option>
-                                    {propertyGoalArr &&
-                                        propertyGoalArr.map((propertyGoal) => (
-                                            <option
-                                                key={
-                                                    propertyGoal.property_goal_id
-                                                }
-                                                value={
-                                                    propertyGoal.property_goal_id
-                                                }
-                                            >
-                                                {propertyGoal.name}
-                                            </option>
-                                        ))}
-                                </select>
+                                    required={false}
+                                    handleChange={(id) => {
+                                        setPropertyGoalId(Number(id));
+                                    }}
+                                    optionArr={propertyGoalArr}
+                                />
                             </div>
 
                             <div className="col-md-6">
-                                <label className="form-label">Estado</label>
-                                <select
-                                    className="form-select"
+                                <ThemeSelectBox
+                                    label="Estado"
                                     value={propertyStatusId}
-                                    onChange={(e) =>
-                                        setPropertyStatusId(e.target.value)
-                                    }
-                                >
-                                    <option value=""></option>
-                                    {propertyStatusArr &&
-                                        propertyStatusArr.map(
-                                            (propertyStatus) => (
-                                                <option
-                                                    key={
-                                                        propertyStatus.property_status_id
-                                                    }
-                                                    value={
-                                                        propertyStatus.property_status_id
-                                                    }
-                                                >
-                                                    {propertyStatus.name}
-                                                </option>
-                                            )
-                                        )}
-                                </select>
+                                    required={false}
+                                    handleChange={(id) => {
+                                        setPropertyStatusId(Number(id));
+                                    }}
+                                    optionArr={propertyStatusArr}
+                                />
                             </div>
                         </div>
                     </div>

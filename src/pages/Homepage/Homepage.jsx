@@ -10,8 +10,8 @@ import MainImage from "./../../assets/main-image.jpg";
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
 
 // Hooks
-import { useFetchAllPropertyHighlight } from "../../hooks/useFetchAllPropertyHighlight";
-import { useFetchAllPropertyNew } from "../../hooks/useFetchAllPropertyNew";
+import { useFetchAllPropertyHighlight } from "../../hooks/firebase/useFetchAllPropertyHighlight";
+import { useFetchAllPropertyNew } from "../../hooks/firebase/useFetchAllPropertyNew";
 
 const Homepage = () => {
     const slideOption = {

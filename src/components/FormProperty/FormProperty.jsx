@@ -20,15 +20,18 @@ registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
 import "./FormProperty.css";
 
 // Hooks
-import { useFetchAllPropertyType } from "../../hooks/useFetchAllPropertyType";
-import { useFetchAllDistrict } from "../../hooks/useFetchAllDistrict";
-import { useFetchAllCounty } from "../../hooks/useFetchAllCounty";
-import { useFetchAllParish } from "../../hooks/useFetchAllParish";
-import { useFetchAllPropertyGoal } from "../../hooks/useFetchAllPropertyGoal";
-import { useFetchAllPropertyStatus } from "../../hooks/useFetchAllPropertyStatus";
-import { useProperty } from "../../hooks/useProperty";
-import { usePropertyOtherImage } from "../../hooks/usePropertyOtherImage";
-import { usePropertyCoverImage } from "../../hooks/usePropertyCoverImage";
+import { useSelectPropertyType } from "../../hooks/useSelectPropertyType";
+import { useSelectPropertyGoal } from "../../hooks/useSelectPropertyGoal";
+import { useSelectPropertyStatus } from "../../hooks/useSelectPropertyStatus";
+import { useSelectDristrict } from "../../hooks/useSelectDistrict";
+import { useSelectCounty } from "../../hooks/useSelectCounty";
+import { useSelectParish } from "../../hooks/useSelectParish";
+import { useProperty } from "../../hooks/firebase/useProperty";
+import { usePropertyOtherImage } from "../../hooks/firebase/usePropertyOtherImage";
+import { usePropertyCoverImage } from "../../hooks/firebase/usePropertyCoverImage";
+
+// Components
+import ThemeSelectBox from "../ThemeSelectBox";
 
 const FormProperty = ({ property, action = "add" }) => {
     const navigate = useNavigate();
@@ -59,11 +62,6 @@ const FormProperty = ({ property, action = "add" }) => {
 
     const [room, setRoom] = useState(property ? property.room : 0);
     const [price, setPrice] = useState(property ? property.price : 0);
-    const [districtId, setDistrictId] = useState(
-        property ? property.district_id : 0
-    );
-    const [countyId, setCountyId] = useState(property ? property.county_id : 0);
-    const [parishId, setParishId] = useState(property ? property.parish_id : 0);
     const [description, setDescription] = useState(
         property ? property.description : ""
     );
@@ -78,7 +76,36 @@ const FormProperty = ({ property, action = "add" }) => {
         property ? property.longitude : 0
     );
 
-    // Media
+    // District
+    const [districtId, setDistrictId] = useState(
+        property ? property.district_id : 0
+    );
+    const handleDistrict = (value) => {
+        setDistrictId(value);
+
+        // Reset county data
+        setCountyId(0);
+
+        // Reset parish data
+        setParishId(0);
+    };
+
+    // County
+    const [countyId, setCountyId] = useState(property ? property.county_id : 0);
+    const handleCounty = (value) => {
+        setCountyId(value);
+
+        // Reset parish data
+        setParishId(0);
+    };
+
+    // Parish
+    const [parishId, setParishId] = useState(property ? property.parish_id : 0);
+    const handleParish = (value) => {
+        setParishId(value);
+    };
+
+    // Cover image
     const [coverImage, setCoverImage] = useState(
         property ? property.cover_image : null
     );
@@ -86,6 +113,8 @@ const FormProperty = ({ property, action = "add" }) => {
         property ? property.cover_image_url : null
     );
     const [fileCoverImage, setFileCoverImage] = useState(null);
+
+    // Other image
     const [otherImage, setOtherImage] = useState(
         property ? property.other_image : 0
     );
@@ -95,13 +124,13 @@ const FormProperty = ({ property, action = "add" }) => {
     const [fileOtherImage, setFileOtherImage] = useState(null);
 
     // Data form the select
-    const { districtArr } = useFetchAllDistrict();
-    const { countyArr } = useFetchAllCounty(districtId);
-    const { parishArr } = useFetchAllParish(countyId);
+    const { optionArr: districtArr } = useSelectDristrict();
+    const { optionArr: countyArr } = useSelectCounty(districtId);
+    const { optionArr: parishArr } = useSelectParish(countyId);
 
-    const { propertyTypeArr } = useFetchAllPropertyType();
-    const { propertyGoalArr } = useFetchAllPropertyGoal();
-    const { propertyStatusArr } = useFetchAllPropertyStatus();
+    const { optionArr: propertyTypeArr } = useSelectPropertyType();
+    const { optionArr: propertyGoalArr } = useSelectPropertyGoal();
+    const { optionArr: propertyStatusArr } = useSelectPropertyStatus();
 
     const {
         insertProperty,
@@ -123,11 +152,11 @@ const FormProperty = ({ property, action = "add" }) => {
         let districtName = "";
         if (districtId != 0) {
             const district = districtArr.find(
-                (district) => district.district_id === districtId
+                (district) => district.value === districtId
             );
 
             if (district) {
-                districtName = district.name;
+                districtName = district.label;
             }
         }
 
@@ -135,11 +164,11 @@ const FormProperty = ({ property, action = "add" }) => {
         let countyName = "";
         if (countyId != 0) {
             const county = countyArr.find(
-                (county) => county.county_id === countyId
+                (county) => county.value === countyId
             );
 
             if (county) {
-                countyName = county.name;
+                countyName = county.label;
             }
         }
 
@@ -147,11 +176,11 @@ const FormProperty = ({ property, action = "add" }) => {
         let parishName = "";
         if (parishId != 0) {
             const parish = parishArr.find(
-                (parish) => parish.parish_id === parishId
+                (parish) => parish.value === parishId
             );
 
             if (parish) {
-                parishName = parish.name;
+                parishName = parish.label;
             }
         }
 
@@ -159,12 +188,11 @@ const FormProperty = ({ property, action = "add" }) => {
         let propertyTypeName = "";
         if (propertyTypeId != 0) {
             const propertyType = propertyTypeArr.find(
-                (propertyType) =>
-                    propertyType.property_type_id === propertyTypeId
+                (propertyType) => propertyType.value === propertyTypeId
             );
 
             if (propertyType) {
-                propertyTypeName = propertyType.name;
+                propertyTypeName = propertyType.label;
             }
         }
 
@@ -172,12 +200,11 @@ const FormProperty = ({ property, action = "add" }) => {
         let propertyGoalName = "";
         if (propertyGoalId != 0) {
             const propertyGoal = propertyGoalArr.find(
-                (propertyGoal) =>
-                    propertyGoal.property_goal_id === propertyGoalId
+                (propertyGoal) => propertyGoal.value === propertyGoalId
             );
 
             if (propertyGoal) {
-                propertyGoalName = propertyGoal.name;
+                propertyGoalName = propertyGoal.label;
             }
         }
 
@@ -190,7 +217,7 @@ const FormProperty = ({ property, action = "add" }) => {
             );
 
             if (propertyStatus) {
-                propertyStatusName = propertyStatus.name;
+                propertyStatusName = propertyStatus.label;
             }
         }
 
@@ -344,6 +371,20 @@ const FormProperty = ({ property, action = "add" }) => {
                 handleSuccess();
 
                 break;
+            case "error":
+                Swal.fire({
+                    title: "Erro!",
+                    text: propertyResponse.data,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                    allowOutsideClick: false,
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                    },
+                });
+
+                break;
 
             default:
                 break;
@@ -409,26 +450,15 @@ const FormProperty = ({ property, action = "add" }) => {
                         />
                     </div>
                     <div className="col-md-6 col-lg-4">
-                        <label className="form-label">Tipo de imóvel</label>
-                        <select
-                            className="form-select"
-                            required
+                        <ThemeSelectBox
+                            label="Tipo de imóvel"
                             value={propertyTypeId}
-                            onChange={(e) =>
-                                setPropertyTypeId(Number(e.target.value))
-                            }
-                        >
-                            <option value=""></option>
-                            {propertyTypeArr &&
-                                propertyTypeArr.map((propertyType) => (
-                                    <option
-                                        key={propertyType.property_type_id}
-                                        value={propertyType.property_type_id}
-                                    >
-                                        {propertyType.name}
-                                    </option>
-                                ))}
-                        </select>
+                            required={true}
+                            handleChange={(id) => {
+                                setPropertyTypeId(Number(id));
+                            }}
+                            optionArr={propertyTypeArr}
+                        />
                     </div>
                     <div className="col-md-6 col-lg-4">
                         <label className="form-label">Ano de construção</label>
@@ -449,50 +479,26 @@ const FormProperty = ({ property, action = "add" }) => {
                         />
                     </div>
                     <div className="col-md-6 col-lg-4">
-                        <label className="form-label">Objetivo</label>
-                        <select
-                            className="form-select"
-                            required
+                        <ThemeSelectBox
+                            label="Objetivo"
                             value={propertyGoalId}
-                            onChange={(e) =>
-                                setPropertyGoalId(Number(e.target.value))
-                            }
-                        >
-                            <option value=""></option>
-                            {propertyGoalArr &&
-                                propertyGoalArr.map((propertyGoal) => (
-                                    <option
-                                        key={propertyGoal.property_goal_id}
-                                        value={propertyGoal.property_goal_id}
-                                    >
-                                        {propertyGoal.name}
-                                    </option>
-                                ))}
-                        </select>
+                            required={true}
+                            handleChange={(id) => {
+                                setPropertyGoalId(Number(id));
+                            }}
+                            optionArr={propertyGoalArr}
+                        />
                     </div>
                     <div className="col-md-6 col-lg-4">
-                        <label className="form-label">Estado</label>
-                        <select
-                            className="form-select"
-                            required
+                        <ThemeSelectBox
+                            label="Estado"
                             value={propertyStatusId}
-                            onChange={(e) =>
-                                setPropertyStatusId(Number(e.target.value))
-                            }
-                        >
-                            <option value=""></option>
-                            {propertyStatusArr &&
-                                propertyStatusArr.map((propertyStatus) => (
-                                    <option
-                                        key={propertyStatus.property_status_id}
-                                        value={
-                                            propertyStatus.property_status_id
-                                        }
-                                    >
-                                        {propertyStatus.name}
-                                    </option>
-                                ))}
-                        </select>
+                            required={true}
+                            handleChange={(id) => {
+                                setPropertyStatusId(Number(id));
+                            }}
+                            optionArr={propertyStatusArr}
+                        />
                     </div>
                     <div className="col-md-6 col-lg-4">
                         <label className="form-label">Nº de Quartos</label>
@@ -517,91 +523,61 @@ const FormProperty = ({ property, action = "add" }) => {
                         />
                     </div>
                     <div className="col-md-6 col-lg-4">
-                        <label className="form-label">Distrito</label>
-                        <select
-                            className="form-select"
-                            required
+                        <ThemeSelectBox
+                            label="Distrito"
                             value={districtId}
-                            onChange={(e) =>
-                                setDistrictId(Number(e.target.value))
-                            }
-                        >
-                            <option value=""></option>
-                            {districtArr &&
-                                districtArr.map((district) => (
-                                    <option
-                                        key={district.district_id}
-                                        value={district.district_id}
-                                    >
-                                        {district.name}
-                                    </option>
-                                ))}
-                        </select>
+                            required={true}
+                            handleChange={(value) => {
+                                handleDistrict(Number(value));
+                            }}
+                            optionArr={districtArr}
+                        />
                     </div>
                     <div className="col-md-6 col-lg-4">
-                        <label className="form-label">Concelho</label>
-                        <select
-                            className="form-select"
-                            required
+                        <ThemeSelectBox
+                            label="Concelho"
                             value={countyId}
-                            onChange={(e) =>
-                                setCountyId(Number(e.target.value))
-                            }
+                            required={true}
+                            handleChange={(value) => {
+                                handleCounty(Number(value));
+                            }}
+                            optionArr={countyArr}
+                            keyPrefix="county"
                             title={
                                 districtId != 0
                                     ? ""
                                     : "Selecione um distrito primeiro"
                             }
-                            disabled={districtId != 0 ? "" : "disabled"}
-                        >
-                            <option value="">
-                                {districtId != 0
+                            disabled={districtId === 0}
+                            defaultOptionLabel={
+                                districtId != 0
                                     ? ""
-                                    : "Selecione um distrito primeiro"}
-                            </option>
-
-                            {countyArr &&
-                                countyArr.map((county) => (
-                                    <option
-                                        key={county.county_id}
-                                        value={county.county_id}
-                                    >
-                                        {county.name}
-                                    </option>
-                                ))}
-                        </select>
+                                    : "Selecione um distrito primeiro"
+                            }
+                        />
                     </div>
                     <div className="col-md-6 col-lg-4">
-                        <label className="form-label">Freguesia</label>
-                        <select
-                            className="form-select"
+                        <ThemeSelectBox
+                            label="Freguesia"
                             value={parishId}
-                            onChange={(e) =>
-                                setParishId(Number(e.target.value))
-                            }
+                            required={false}
+                            handleChange={(value) => {
+                                handleParish(Number(value));
+                            }}
+                            optionArr={parishArr}
+                            keyPrefix="county"
                             title={
                                 countyId != 0
                                     ? ""
                                     : "Selecione um concelho primeiro"
                             }
-                            disabled={countyId != 0 ? "" : "disabled"}
-                        >
-                            <option value="">
-                                {countyId != 0
+                            disabled={countyId === 0}
+                            defaultOptionLabel={
+                                countyId != 0
                                     ? ""
-                                    : "Selecione um concelho primeiro"}
-                            </option>
-
-                            {parishArr &&
-                                parishArr.map((parish) => (
-                                    <option
-                                        key={parish.parish_id}
-                                        value={parish.parish_id}
-                                    >
-                                        {parish.name}
-                                    </option>
-                                ))}
-                        </select>
+                                    : "Selecione um concelho primeiro"
+                            }
+                        />
                     </div>
                     <div className="col-md-6 col-lg-4">
                         <label className="form-label">Latitude</label>

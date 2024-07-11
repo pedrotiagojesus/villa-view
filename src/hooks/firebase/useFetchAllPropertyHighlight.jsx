@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase/config";
+import { db } from "../../firebase/config";
 import {
     collection,
     query,
@@ -9,11 +9,11 @@ import {
 } from "firebase/firestore";
 
 // Hooks
-import { useMemoryLeak } from "./useMemoryLeak";
+import { useMemoryLeak } from "../useMemoryLeak";
 import { usePropertyCoverImage } from "./usePropertyCoverImage";
 
-export const useFetchAllPropertyNew = () => {
-    const [propertyNewArr, setPropertyNewArr] = useState(null);
+export const useFetchAllPropertyHighlight = () => {
+    const [propertyHighlightArr, setPropertyHighlightArr] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
@@ -34,12 +34,13 @@ export const useFetchAllPropertyNew = () => {
             try {
                 let q = await query(
                     collectionRef,
+                    where("is_highlight", "==", true),
                     where("is_visible", "==", true),
                     orderBy("createdAt", "desc")
                 );
 
                 await onSnapshot(q, async (querySnapshot) => {
-                    setPropertyNewArr(
+                    setPropertyHighlightArr(
                         await Promise.all(
                             querySnapshot.docs.map(async (doc) => ({
                                 id: doc.id,
@@ -61,5 +62,5 @@ export const useFetchAllPropertyNew = () => {
         loadData();
     }, [cancelled]);
 
-    return { propertyNewArr, loading, error };
+    return { propertyHighlightArr, loading, error };
 };

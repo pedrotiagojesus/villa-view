@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+// Firebase
 import { db } from "../../firebase/config";
 import {
     collection,
@@ -10,7 +12,7 @@ import {
 
 // Hooks
 import { useMemoryLeak } from "../useMemoryLeak";
-import { usePropertyCoverImage } from "../usePropertyCoverImage";
+import { usePropertyCoverImage } from "./usePropertyCoverImage";
 
 export const useFetchAllPropertySearch = (
     price_min,

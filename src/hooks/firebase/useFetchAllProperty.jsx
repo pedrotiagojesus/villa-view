@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase/config";
+import { db } from "../../firebase/config";
 import {
     collection,
     query,
@@ -7,10 +7,10 @@ import {
     onSnapshot,
     where,
 } from "firebase/firestore";
-import { useMemoryLeak } from "./useMemoryLeak";
+import { useMemoryLeak } from "../useMemoryLeak";
 
-export const useFetchAllPropertyGoal = () => {
-    const [propertyGoalArr, setPropertyGoalArr] = useState(null);
+export const useFetchAllProperty = () => {
+    const [propertyArr, setPropertyArr] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
@@ -24,13 +24,16 @@ export const useFetchAllPropertyGoal = () => {
             }
 
             setLoading(true);
-            const collectionRef = await collection(db, "property_goal");
+            const collectionRef = await collection(db, "property");
 
             try {
-                let q = await query(collectionRef, orderBy("name", "asc"));
+                let q = await query(
+                    collectionRef,
+                    orderBy("createdAt", "desc")
+                );
 
                 await onSnapshot(q, (querySnapshot) => {
-                    setPropertyGoalArr(
+                    setPropertyArr(
                         querySnapshot.docs.map((doc) => ({
                             id: doc.id,
                             ...doc.data(),
@@ -47,5 +50,5 @@ export const useFetchAllPropertyGoal = () => {
         loadData();
     }, [cancelled]);
 
-    return { propertyGoalArr, loading, error };
+    return { propertyArr, loading, error };
 };

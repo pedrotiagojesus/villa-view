@@ -12,7 +12,7 @@ const CreateProperty = () => {
             <Banner title="Criar imóvel" />
             <section id="section-backoffice-dashboard">
                 <div className="container">
-                    <div className="row">
+                    <div className="row main-row">
                         <div className="col-md-3">
                             <BackofficeNavigation />
                         </div>

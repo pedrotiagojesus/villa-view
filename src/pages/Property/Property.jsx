@@ -18,7 +18,7 @@ import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 
 // Hooks
-import { useFetchProperty } from "../../hooks/useFetchProperty";
+import { useFetchProperty } from "../../hooks/firebase/useFetchProperty";
 
 const Property = () => {
     const { property_id } = useParams();
