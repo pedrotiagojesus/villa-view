@@ -66,7 +66,7 @@ export const useAuthentication = () => {
     };
 
     const logout = () => {
-        checkIfIs();
+        checkIfIsCancelled();
 
         signOut(auth);
     };
