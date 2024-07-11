@@ -171,12 +171,14 @@ const Property = () => {
                                 </div>
                             </div>
 
-                            <div className="block-wrap property-detail">
-                                <h3 className="block-header">Descrição</h3>
-                                <div className="block-content-wrap">
-                                    {property.description}
+                            {property.description != "" && (
+                                <div className="block-wrap property-detail">
+                                    <h3 className="block-header">Descrição</h3>
+                                    <div className="block-content-wrap">
+                                        {property.description}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
 
                         <div className="col-md-4 col-xll-3">
