@@ -212,8 +212,7 @@ const FormProperty = ({ property, action = "add" }) => {
         let propertyStatusName = "";
         if (propertyStatusId != 0) {
             const propertyStatus = propertyStatusArr.find(
-                (propertyStatus) =>
-                    propertyStatus.property_status_id === propertyStatusId
+                (propertyStatus) => propertyStatus.value === propertyStatusId
             );
 
             if (propertyStatus) {
