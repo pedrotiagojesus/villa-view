@@ -25,3 +25,9 @@
 .property-item .card-text {
     color: #a7aeb8;
 }
+
+.property-item .image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

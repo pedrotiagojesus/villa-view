@@ -12,7 +12,8 @@ a {
 }
 
 .splide__track {
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .block-wrap {

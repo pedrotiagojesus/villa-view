@@ -12,11 +12,11 @@ const PropertyItem = ({ property }) => {
             to={`/villa-view/property/${property.id}`}
             className="card shadow property-item"
         >
-            <img
-                src={property.cover_image_url}
-                className="card-img-top"
-                alt={property.name}
-            />
+            <div
+                className="ratio ratio-16x9 image"
+                style={{ backgroundImage: `url(${property.cover_image_url})` }}
+            ></div>
+
             <div className="card-body">
                 <h5 className="card-title">{property.property_name}</h5>
             </div>
