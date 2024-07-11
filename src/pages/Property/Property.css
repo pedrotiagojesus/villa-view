@@ -29,6 +29,7 @@
 #section-property-data .address {
     font-size: 1.1rem;
     font-weight: 300;
+    margin-bottom: 0.5rem;
 }
 
 #section-property-data .address .icon {
@@ -38,7 +39,8 @@
 #section-property-data .price {
     font-size: 1.875rem;
     font-weight: 600;
-    text-align: right;
+    text-align: left;
+    margin-bottom: 0.5rem;
 }
 
 #section-property-data .gallery {
@@ -84,6 +86,9 @@
 /* MD */
 
 @media (width >= 768px) {
+    #section-property-data .price {
+        text-align: right;
+    }
 }
 
 /* LG  */

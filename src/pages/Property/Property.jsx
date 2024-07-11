@@ -66,9 +66,9 @@ const Property = () => {
             <Banner title={property.property_name} />
             <section id="section-property-data">
                 <div className="container">
-                    <div className="d-flex justify-content-between">
-                        <div className="">
-                            <h1 className="property-name">
+                    <div className="row">
+                        <div className="col-md-8">
+                            <h1 className="property-name d-none d-md-block">
                                 {property.property_name}
                             </h1>
                             <p className="reference">
@@ -83,8 +83,10 @@ const Property = () => {
                                 <PropertyAddress property={property} />
                             </p>
                         </div>
-                        <div className="price">
-                            <PropertyPrice property={property} />
+                        <div className="col-md-4">
+                            <div className="price">
+                                <PropertyPrice property={property} />
+                            </div>
                         </div>
                     </div>
 

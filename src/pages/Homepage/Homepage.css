@@ -20,8 +20,18 @@
     border-bottom: 1px solid #d1d1d1;
 }
 
+#section-highlight .splide__track {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 #section-new {
     padding: var(--space-section) 0;
+}
+
+#section-new .splide__track {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 /* SM */
