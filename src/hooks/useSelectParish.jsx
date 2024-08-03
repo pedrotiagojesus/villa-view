@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-7;
 
 // Hooks
 import { useFetchAllParish } from "./firebase/useFetchAllParish";
