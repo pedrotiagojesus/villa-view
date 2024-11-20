@@ -5,16 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import "./ModalSearchAdvance.css";
 
 // Hooks
-import { useSelectPropertyType } from "../../hooks/useSelectPropertyType";
-import { useSelectPropertyGoal } from "../../hooks/useSelectPropertyGoal";
-import { useSelectPropertyStatus } from "../../hooks/useSelectPropertyStatus";
-import { useSelectDristrict } from "../../hooks/useSelectDistrict";
-import { useSelectCounty } from "../../hooks/useSelectCounty";
-import { useSelectParish } from "../../hooks/useSelectParish";
 import useBuildQueryString from "../../hooks/utils/useBuildQueryString";
 
 // Components
-import ThemeSelectBox from "../ThemeSelectBox";
+import District from "../Select/District";
+import County from "../Select/County";
+import Parish from "../Select/Parish";
+import PropertyType from "../Select/PropertyType";
+import PropertyGoal from "../Select/PropertyGoal";
+import PropertyStatus from "../Select/PropertyStatus";
 
 const ModalSearchAdvance = () => {
     const navigate = useNavigate();
@@ -40,9 +39,8 @@ const ModalSearchAdvance = () => {
 
     // District
     const [districtId, setDistrictId] = useState(urlDistrictId);
-    const { optionArr: districtArr } = useSelectDristrict();
-    const handleDistrict = (value) => {
-        setDistrictId(value);
+    const handleDistrict = (e) => {
+        setDistrictId(Number(e.target.value));
 
         // Reset county data
         setCountyId(0);
@@ -53,9 +51,8 @@ const ModalSearchAdvance = () => {
 
     // County
     const [countyId, setCountyId] = useState(urlCountyId);
-    const { optionArr: countyArr } = useSelectCounty(districtId);
-    const handleCounty = (value) => {
-        setCountyId(value);
+    const handleCounty = (e) => {
+        setCountyId(Number(e.target.value));
 
         // Reset parish data
         setParishId(0);
@@ -63,16 +60,11 @@ const ModalSearchAdvance = () => {
 
     // Parish
     const [parishId, setParishId] = useState(urlParishId);
-    const { optionArr: parishArr } = useSelectParish(countyId);
-    const handleParish = (value) => {
-        setParishId(value);
+    const handleParish = (e) => {
+        setParishId(Number(e.target.value));
     };
 
     const closeRef = useRef();
-
-    const { optionArr: propertyTypeArr } = useSelectPropertyType();
-    const { optionArr: propertyGoalArr } = useSelectPropertyGoal();
-    const { optionArr: propertyStatusArr } = useSelectPropertyStatus();
 
     useEffect(() => {
         setPriceMin(urlPriceMin);
@@ -166,7 +158,7 @@ const ModalSearchAdvance = () => {
             );
         }
 
-        navigate(`/villa-view/search${queryString}`);
+        navigate(`/search${queryString}`);
         closeRef.current.click();
     };
 
@@ -215,74 +207,41 @@ const ModalSearchAdvance = () => {
                             </div>
 
                             <div className="col-md-6">
-                                <ThemeSelectBox
+                                <District
                                     label="Distrito"
                                     value={districtId}
                                     required={false}
-                                    handleChange={(id) => {
-                                        handleDistrict(Number(id));
-                                    }}
-                                    optionArr={districtArr}
+                                    handleChange={(e) => handleDistrict(e)}
                                 />
                             </div>
 
                             <div className="col-md-6">
-                                <ThemeSelectBox
-                                    label="Concelho"
+                                <County
                                     value={countyId}
                                     required={true}
-                                    handleChange={(id) => {
-                                        handleCounty(Number(id));
-                                    }}
-                                    optionArr={countyArr}
-                                    keyPrefix="county"
-                                    title={
-                                        districtId != 0
-                                            ? ""
-                                            : "Selecione um distrito primeiro"
-                                    }
-                                    disabled={districtId === 0}
-                                    defaultOptionLabel={
-                                        districtId != 0
-                                            ? ""
-                                            : "Selecione um distrito primeiro"
-                                    }
+                                    handleChange={(e) => handleCounty(e)}
+                                    districtId={districtId}
                                 />
                             </div>
 
                             <div className="col-md-6">
-                                <ThemeSelectBox
-                                    label="Freguesia"
+                                <Parish
                                     value={parishId}
                                     required={false}
-                                    handleChange={(id) => {
-                                        handleParish(Number(id));
-                                    }}
-                                    optionArr={parishArr}
-                                    keyPrefix="county"
-                                    title={
-                                        countyId != 0
-                                            ? ""
-                                            : "Selecione um concelho primeiro"
-                                    }
-                                    disabled={countyId === 0}
-                                    defaultOptionLabel={
-                                        countyId != 0
-                                            ? ""
-                                            : "Selecione um concelho primeiro"
-                                    }
+                                    handleChange={(e) => handleParish(e)}
+                                    countyId={countyId}
                                 />
                             </div>
 
                             <div className="col-md-6">
-                                <ThemeSelectBox
-                                    label="Tipo de imóvel"
+                                <PropertyType
                                     value={propertyTypeId}
                                     required={true}
-                                    handleChange={(id) => {
-                                        setPropertyTypeId(Number(id));
+                                    handleChange={(e) => {
+                                        setPropertyTypeId(
+                                            Number(e.target.value)
+                                        );
                                     }}
-                                    optionArr={propertyTypeArr}
                                 />
                             </div>
 
@@ -303,26 +262,26 @@ const ModalSearchAdvance = () => {
                             </div>
 
                             <div className="col-md-6">
-                                <ThemeSelectBox
-                                    label="Objectivo"
+                                <PropertyGoal
                                     value={propertyGoalId}
                                     required={false}
-                                    handleChange={(id) => {
-                                        setPropertyGoalId(Number(id));
+                                    handleChange={(e) => {
+                                        setPropertyGoalId(
+                                            Number(e.target.value)
+                                        );
                                     }}
-                                    optionArr={propertyGoalArr}
                                 />
                             </div>
 
                             <div className="col-md-6">
-                                <ThemeSelectBox
-                                    label="Estado"
+                                <PropertyStatus
                                     value={propertyStatusId}
                                     required={false}
-                                    handleChange={(id) => {
-                                        setPropertyStatusId(Number(id));
+                                    handleChange={(e) => {
+                                        setPropertyStatusId(
+                                            Number(e.target.value)
+                                        );
                                     }}
-                                    optionArr={propertyStatusArr}
                                 />
                             </div>
                         </div>

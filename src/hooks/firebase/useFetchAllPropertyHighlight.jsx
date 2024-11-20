@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { db } from "../../firebase/config";
+// import { db } from "../../firebase/config";
+/*
 import {
     collection,
     query,
@@ -7,6 +8,7 @@ import {
     onSnapshot,
     where,
 } from "firebase/firestore";
+*/
 
 // Hooks
 import { useMemoryLeak } from "../useMemoryLeak";
@@ -29,6 +31,7 @@ export const useFetchAllPropertyHighlight = () => {
             }
 
             setLoading(true);
+            /*
             const collectionRef = await collection(db, "property");
 
             try {
@@ -55,7 +58,7 @@ export const useFetchAllPropertyHighlight = () => {
             } catch (error) {
                 setError(error.message);
             }
-
+            */
             setLoading(false);
         }
 

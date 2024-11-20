@@ -1,25 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // CSS
 import "./WantToSell.css";
 
 // Components
 import Banner from "../../components/Banner/Banner";
-import ThemeSelectBox from "../../components/ThemeSelectBox";
-
-// Hooks
-import { useSelectPropertyType } from "../../hooks/useSelectPropertyType";
-import { useSelectPropertyGoal } from "../../hooks/useSelectPropertyGoal";
-import { useSelectPropertyStatus } from "../../hooks/useSelectPropertyStatus";
-import { useSelectDristrict } from "../../hooks/useSelectDistrict";
-import { useSelectCounty } from "../../hooks/useSelectCounty";
-import { useSelectParish } from "../../hooks/useSelectParish";
+import District from "../../components/Select/District";
+import County from "../../components/Select/County";
+import Parish from "../../components/Select/Parish";
+import PropertyType from "../../components/Select/PropertyType";
 
 // Sweetalert 2
 import Swal from "sweetalert2";
 
 // Datepicker
 import DatePicker from "react-datepicker";
+import PropertyGoal from "../../components/Select/PropertyGoal";
+import PropertyStatus from "../../components/Select/PropertyStatus";
 
 const WantToSell = () => {
     const [name, setName] = useState("");
@@ -33,9 +30,11 @@ const WantToSell = () => {
     // District
     const [districtId, setDistrictId] = useState(0);
     const [districtName, setDistrictName] = useState("");
-    const { optionArr: districtArr } = useSelectDristrict();
-    const handleDistrict = (value) => {
-        setDistrictId(value);
+    const handleDistrict = (e) => {
+        setDistrictId(Number(e.target.value));
+
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        setDistrictName(selectedOption.textContent);
 
         // Reset county data
         setCountyId(0);
@@ -44,118 +43,60 @@ const WantToSell = () => {
         // Reset parish data
         setParishId(0);
         setParishName("");
-
-        if (value === 0) {
-            setDistrictName("");
-        } else {
-            const district = districtArr.find(
-                (district) => district.value === value
-            );
-
-            if (district) {
-                setDistrictName(district.label);
-            }
-        }
     };
 
     // County
     const [countyId, setCountyId] = useState(0);
     const [countyName, setCountyName] = useState("");
-    const { optionArr: countyArr } = useSelectCounty(districtId);
-    const handleCounty = (value) => {
-        setCountyId(value);
+    const handleCounty = (e) => {
+        setCountyId(Number(e.target.value));
+
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        setCountyName(selectedOption.textContent);
 
         // Reset parish data
         setParishId(0);
         setParishName("");
-
-        if (value === 0) {
-            setCountyName("");
-        } else {
-            const county = countyArr.find((county) => county.value === value);
-
-            if (county) {
-                setCountyName(county.label);
-            }
-        }
     };
 
     // Parish
     const [parishId, setParishId] = useState(0);
     const [parishName, setParishName] = useState("");
-    const { optionArr: parishArr } = useSelectParish(countyId);
-    const handleParish = (value) => {
-        setParishId(value);
+    const handleParish = (e) => {
+        setParishId(Number(e.target.value));
 
-        if (value === 0) {
-            setParishName("");
-        } else {
-            const parish = parishArr.find((parish) => parish.value === value);
-
-            if (parish) {
-                setParishName(parish.label);
-            }
-        }
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        setParishName(selectedOption.textContent);
     };
 
     // Property type
     const [propertyTypeId, setPropertyTypeId] = useState(0);
     const [propertyTypeName, setPropertyTypeName] = useState("");
-    const { optionArr: propertyTypeArr } = useSelectPropertyType();
-    const handlePropertyType = (value) => {
-        setPropertyTypeId(value);
+    const handlePropertyType = (e) => {
+        setPropertyTypeId(Number(e.target.value));
 
-        if (propertyTypeId === 0) {
-            setPropertyTypeName("");
-        } else {
-            const propertyType = propertyTypeArr.find(
-                (propertyType) => propertyType.value === value
-            );
-
-            if (propertyType) {
-                setPropertyTypeName(propertyType.label);
-            }
-        }
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        setPropertyTypeName(selectedOption.textContent);
     };
 
     // Property goal
     const [propertyGoalId, setPropertyGoalId] = useState(0);
     const [propertyGoalName, setPropertyGoalName] = useState("");
-    const { optionArr: propertyGoalArr } = useSelectPropertyGoal();
-    const handlePropertyGoal = (value) => {
-        setPropertyGoalId(value);
+    const handlePropertyGoal = (e) => {
+        setPropertyGoalId(Number(e.target.value));
 
-        if (value === 0) {
-            setPropertyGoalName("");
-        } else {
-            const propertyGoal = propertyGoalArr.find(
-                (propertyGoal) => propertyGoal.value === value
-            );
-
-            if (propertyGoal) {
-                setPropertyGoalName(propertyGoal.label);
-            }
-        }
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        setPropertyTypeName(selectedOption.textContent);
     };
 
     // Property status
     const [propertyStatusId, setPropertyStatusId] = useState(0);
     const [propertyStatusName, setPropertyStatusName] = useState("");
-    const { optionArr: propertyStatusArr } = useSelectPropertyStatus();
-    const handlePropertyStatus = (value) => {
-        setPropertyStatusId(value);
+    const handlePropertyStatus = (e) => {
+        setPropertyStatusId(Number(e.target.value));
 
-        if (value === 0) {
-            setPropertyStatusName("");
-        } else {
-            const propertyStatus = propertyStatusArr.find(
-                (propertyStatus) => propertyStatus.value === value
-            );
-
-            if (propertyStatus) {
-                setPropertyStatusName(propertyStatus.label);
-            }
-        }
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        setPropertyStatusName(selectedOption.textContent);
     };
 
     const handleSubmit = (e) => {
@@ -238,15 +179,10 @@ const WantToSell = () => {
                         <h3 className="block-header">Dados do Imóvel</h3>
                         <div className="row">
                             <div className="col-md-6 col-lg-4">
-                                <ThemeSelectBox
-                                    label="Tipo de imóvel"
+                                <PropertyType
                                     value={propertyTypeId}
                                     required={true}
-                                    handleChange={(value) =>
-                                        handlePropertyType(Number(value))
-                                    }
-                                    optionArr={propertyTypeArr}
-                                    keyPrefix="property-type"
+                                    handleChange={(e) => handlePropertyType(e)}
                                 />
                                 <input
                                     type="hidden"
@@ -270,13 +206,10 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <ThemeSelectBox
-                                    label="Objetivo"
+                                <PropertyGoal
                                     value={propertyGoalId}
                                     required={true}
-                                    handleChange={handlePropertyGoal}
-                                    optionArr={propertyGoalArr}
-                                    keyPrefix="property-goal"
+                                    handleChange={(e) => handlePropertyGoal(e)}
                                 />
                                 <input
                                     type="hidden"
@@ -285,15 +218,12 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <ThemeSelectBox
-                                    label="Estado"
+                                <PropertyStatus
                                     value={propertyStatusId}
                                     required={true}
-                                    handleChange={(value) =>
-                                        handlePropertyStatus(Number(value))
+                                    handleChange={(e) =>
+                                        handlePropertyStatus(e)
                                     }
-                                    optionArr={propertyStatusArr}
-                                    keyPrefix="property-status"
                                 />
                                 <input
                                     type="hidden"
@@ -330,14 +260,11 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <ThemeSelectBox
+                                <District
                                     label="Distrito"
                                     value={districtId}
                                     required={true}
-                                    handleChange={(value) =>
-                                        handleDistrict(Number(value))
-                                    }
-                                    optionArr={districtArr}
+                                    handleChange={(e) => handleDistrict(e)}
                                     keyPrefix="district"
                                 />
                                 <input
@@ -347,26 +274,11 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <ThemeSelectBox
-                                    label="Concelho"
+                                <County
                                     value={countyId}
                                     required={true}
-                                    handleChange={(value) =>
-                                        handleCounty(Number(value))
-                                    }
-                                    optionArr={countyArr}
-                                    keyPrefix="county"
-                                    title={
-                                        districtId != 0
-                                            ? ""
-                                            : "Selecione um distrito primeiro"
-                                    }
-                                    disabled={districtId === 0}
-                                    defaultOptionLabel={
-                                        districtId != 0
-                                            ? ""
-                                            : "Selecione um distrito primeiro"
-                                    }
+                                    handleChange={(e) => handleCounty(e)}
+                                    districtId={districtId}
                                 />
                                 <input
                                     type="hidden"
@@ -375,26 +287,13 @@ const WantToSell = () => {
                                 />
                             </div>
                             <div className="col-md-6 col-lg-4">
-                                <ThemeSelectBox
+                                <Parish
                                     label="Freguesia"
                                     value={parishId}
                                     required={false}
-                                    handleChange={(value) =>
-                                        handleParish(Number(value))
-                                    }
-                                    optionArr={parishArr}
-                                    keyPrefix="county"
-                                    title={
-                                        countyId != 0
-                                            ? ""
-                                            : "Selecione um concelho primeiro"
-                                    }
-                                    disabled={countyId === 0}
-                                    defaultOptionLabel={
-                                        countyId != 0
-                                            ? ""
-                                            : "Selecione um concelho primeiro"
-                                    }
+                                    handleChange={(e) => handleParish(e)}
+                                    keyPrefix="parish"
+                                    countyId={countyId}
                                 />
                                 <input
                                     type="hidden"

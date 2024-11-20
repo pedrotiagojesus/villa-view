@@ -62,7 +62,7 @@ const Header = () => {
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink
-                                to="/villa-view"
+                                to="/"
                                 className="nav-link"
                                 onClick={handleNavCollapse}
                             >
@@ -71,7 +71,7 @@ const Header = () => {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to="/villa-view/want-to-sell"
+                                to="/want-to-sell"
                                 className="nav-link"
                                 onClick={handleNavCollapse}
                             >
@@ -80,7 +80,7 @@ const Header = () => {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to="/villa-view/about-us"
+                                to="/about-us"
                                 className="nav-link"
                                 onClick={handleNavCollapse}
                             >
@@ -89,7 +89,7 @@ const Header = () => {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to="/villa-view/contact"
+                                to="/contact"
                                 className="nav-link"
                                 onClick={handleNavCollapse}
                             >

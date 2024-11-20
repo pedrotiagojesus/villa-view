@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,13 +13,64 @@ import "@splidejs/react-splide/css";
 import "react-datepicker/dist/react-datepicker.min.css";
 
 // CSS
-import "./index.css";
-import "./root.css";
-import "./form.css";
-import "./datepicker.css";
-import "./sweetalert.css";
+import "./assets/css/index.css";
+import "./assets/css/root.css";
+import "./assets/css/form.css";
+import "./assets/css/datepicker.css";
+import "./assets/css/sweetalert.css";
 
 // Pages
 import App from "./App.jsx";
+import Homepage from "./pages/Homepage/Homepage.jsx";
+import Contact from "./pages/Contact/Contact.jsx";
+import AboutUs from "./pages/AboutUs/AboutUs.jsx";
+import WantToSell from "./pages/WantToSell/WantToSell.jsx";
+import Property from "./pages/Property/Property.jsx";
+import Search from "./pages/Search/Search.jsx";
+import Test from "./pages/Test.jsx";
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+const router = createBrowserRouter(
+    [
+        {
+            path: "/",
+            element: <App />,
+            children: [
+                {
+                    path: "/",
+                    element: <Homepage />,
+                },
+                {
+                    path: "contact",
+                    element: <Contact />,
+                },
+                {
+                    path: "about-us",
+                    element: <AboutUs />,
+                },
+                {
+                    path: "want-to-sell",
+                    element: <WantToSell />,
+                },
+                {
+                    path: "property/:property_id",
+                    element: <Property />,
+                },
+                {
+                    path: "search",
+                    element: <Search />,
+                },
+                {
+                    path: "test",
+                    element: <Test />,
+                },
+            ],
+        },
+    ],
+    {
+        basename: "/villa-view",
+    }
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <RouterProvider router={router} />
+);

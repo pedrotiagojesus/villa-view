@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { db } from "../../firebase/config";
+// import { db } from "../../firebase/config";
+/*
 import {
     collection,
     query,
@@ -7,6 +8,7 @@ import {
     onSnapshot,
     where,
 } from "firebase/firestore";
+*/
 import { useMemoryLeak } from "../useMemoryLeak";
 
 export const useFetchAllProperty = () => {
@@ -24,6 +26,7 @@ export const useFetchAllProperty = () => {
             }
 
             setLoading(true);
+            /*
             const collectionRef = await collection(db, "property");
 
             try {
@@ -43,7 +46,7 @@ export const useFetchAllProperty = () => {
             } catch (error) {
                 setError(error.message);
             }
-
+            */
             setLoading(false);
         }
 

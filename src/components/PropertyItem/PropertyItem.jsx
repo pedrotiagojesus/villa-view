@@ -9,7 +9,7 @@ import PropertyPrice from "../PropertyPrice";
 const PropertyItem = ({ property }) => {
     return (
         <Link
-            to={`/villa-view/property/${property.id}`}
+            to={`/property/${property.id}`}
             className="card shadow property-item"
         >
             <div

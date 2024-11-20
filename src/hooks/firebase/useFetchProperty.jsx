@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from "react";
 
 // Firebase
-import { db } from "../../firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+// import { db } from "../../firebase/config";
+// import { doc, getDoc } from "firebase/firestore";
 
 // Hooks
 import { usePropertyCoverImage } from "./usePropertyCoverImage";
@@ -37,6 +37,7 @@ export const useFetchProperty = (id) => {
         const loadDocument = async () => {
             dispatch({ type: "LOADING" });
 
+            /*
             try {
                 const docRef = doc(db, "property", id);
                 const docSnap = await getDoc(docRef);
@@ -55,6 +56,7 @@ export const useFetchProperty = (id) => {
                 console.log(error);
                 dispatch({ type: "ERROR", error: error.message });
             }
+            */
         };
 
         loadDocument();
