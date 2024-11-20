@@ -21,18 +21,3 @@ a {
     padding-bottom: 2rem;
     border-bottom: 1px solid #ced4da;
 }
-
-.filepond--root .filepond--credits[style] {
-    display: none !important;
-}
-
-.filepond--root {
-    margin-bottom: 0 !important;
-    border: #d1d1d1 2px solid;
-    overflow: hidden;
-}
-
-.filepond--drip {
-    background-color: var(--bs-body-bg);
-    opacity: 0;
-}
