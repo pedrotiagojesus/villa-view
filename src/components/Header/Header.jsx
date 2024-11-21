@@ -25,7 +25,7 @@ const Header = () => {
 
     return (
         <header
-            className={`navbar navbar-expand-lg bg-body-tertiary fixed-top ${
+            className={`navbar navbar-expand-lg bg-body-tertiary sticky-top ${
                 !scroll ? `` : `scrolled shadow`
             }`}
             ref={headerRef}

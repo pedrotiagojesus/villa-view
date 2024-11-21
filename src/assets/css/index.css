@@ -1,7 +1,3 @@
-main {
-    padding-top: var(--header-height);
-}
-
 a {
     transition: 0.3s;
     text-decoration: var(--bs-link-decoration);
