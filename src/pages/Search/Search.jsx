@@ -8,7 +8,8 @@ import Banner from "../../components/Banner/Banner";
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
 import Loader from "../../components/Loader/Loader";
 
-import { useFetchAllPropertySearch } from "../../hooks/firebase/useFetchAllPropertySearch";
+// Hooks
+import usePropertySearchData from "../../hooks/usePropertySearchData";
 
 const Search = () => {
     const [searchParams] = useSearchParams();
@@ -67,7 +68,7 @@ const Search = () => {
         room = Number(room);
     }
 
-    const { propertyArr, loading } = useFetchAllPropertySearch(
+    const { propertyArr, loading } = usePropertySearchData(
         priceMin,
         priceMax,
         districtId,

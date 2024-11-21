@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 
@@ -11,18 +11,15 @@ import Loader from "../../components/Loader/Loader";
 import PropertyPrice from "../../components/PropertyPrice";
 import PropertyAddress from "../../components/PropertyAddress";
 
-// Emailjs
-import emailjs from "@emailjs/browser";
-
 // Sweetalert 2
 import Swal from "sweetalert2";
 
 // Hooks
-import { useFetchProperty } from "../../hooks/firebase/useFetchProperty";
+import usePropertyData from "../../hooks/usePropertyData";
 
 const Property = () => {
     const { property_id } = useParams();
-    const { response: propertyResponse } = useFetchProperty(property_id);
+    const { property, loading } = usePropertyData(property_id);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -30,13 +27,6 @@ const Property = () => {
 
     const handleContact = (e) => {
         e.preventDefault();
-
-        emailjs.sendForm(
-            "service_rgiw3sh",
-            "template_isa25vs",
-            e.target,
-            "wNI4sprjKu_5ZAx8R"
-        );
 
         Swal.fire({
             title: "Enviado!",
@@ -52,11 +42,9 @@ const Property = () => {
         });
     };
 
-    if (propertyResponse.loading || propertyResponse.loading === null) {
+    if (loading) {
         return <Loader />;
     }
-
-    const property = propertyResponse.data;
 
     // Gallery option
     const slideOption = {};

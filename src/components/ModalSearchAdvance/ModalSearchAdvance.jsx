@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import "./ModalSearchAdvance.css";
 
 // Hooks
-import useBuildQueryString from "../../hooks/utils/useBuildQueryString";
+import buildQueryString from "../../utils/buildQueryString";
 
 // Components
 import District from "../Select/District";
@@ -94,20 +94,12 @@ const ModalSearchAdvance = () => {
 
         let queryString = "";
         if (priceMax != 0) {
-            queryString = useBuildQueryString(
-                queryString,
-                "price_min",
-                priceMin
-            );
-            queryString = useBuildQueryString(
-                queryString,
-                "price_max",
-                priceMax
-            );
+            queryString = buildQueryString(queryString, "price_min", priceMin);
+            queryString = buildQueryString(queryString, "price_max", priceMax);
         }
 
         if (districtId != 0) {
-            queryString = useBuildQueryString(
+            queryString = buildQueryString(
                 queryString,
                 "district_id",
                 districtId
@@ -115,23 +107,15 @@ const ModalSearchAdvance = () => {
         }
 
         if (countyId != 0) {
-            queryString = useBuildQueryString(
-                queryString,
-                "county_id",
-                countyId
-            );
+            queryString = buildQueryString(queryString, "county_id", countyId);
         }
 
         if (parishId != 0) {
-            queryString = useBuildQueryString(
-                queryString,
-                "parish_id",
-                parishId
-            );
+            queryString = buildQueryString(queryString, "parish_id", parishId);
         }
 
         if (propertyTypeId != 0) {
-            queryString = useBuildQueryString(
+            queryString = buildQueryString(
                 queryString,
                 "property_type_id",
                 propertyTypeId
@@ -139,11 +123,11 @@ const ModalSearchAdvance = () => {
         }
 
         if (room != 0) {
-            queryString = useBuildQueryString(queryString, "room", room);
+            queryString = buildQueryString(queryString, "room", room);
         }
 
         if (propertyGoalId != 0) {
-            queryString = useBuildQueryString(
+            queryString = buildQueryString(
                 queryString,
                 "property_goal_id",
                 propertyGoalId
@@ -151,7 +135,7 @@ const ModalSearchAdvance = () => {
         }
 
         if (propertyStatusId != 0) {
-            queryString = useBuildQueryString(
+            queryString = buildQueryString(
                 queryString,
                 "property_status_id",
                 propertyStatusId
@@ -236,7 +220,7 @@ const ModalSearchAdvance = () => {
                             <div className="col-md-6">
                                 <PropertyType
                                     value={propertyTypeId}
-                                    required={true}
+                                    required={false}
                                     handleChange={(e) => {
                                         setPropertyTypeId(
                                             Number(e.target.value)

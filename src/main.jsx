@@ -27,7 +27,6 @@ import AboutUs from "./pages/AboutUs/AboutUs.jsx";
 import WantToSell from "./pages/WantToSell/WantToSell.jsx";
 import Property from "./pages/Property/Property.jsx";
 import Search from "./pages/Search/Search.jsx";
-import Test from "./pages/Test.jsx";
 
 const router = createBrowserRouter(
     [
@@ -58,10 +57,6 @@ const router = createBrowserRouter(
                 {
                     path: "search",
                     element: <Search />,
-                },
-                {
-                    path: "test",
-                    element: <Test />,
                 },
             ],
         },

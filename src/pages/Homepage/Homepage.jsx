@@ -10,8 +10,8 @@ import MainImage from "./../../assets/main-image.jpg";
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
 
 // Hooks
-import { useFetchAllPropertyHighlight } from "../../hooks/firebase/useFetchAllPropertyHighlight";
-import { useFetchAllPropertyNew } from "../../hooks/firebase/useFetchAllPropertyNew";
+import usePropertyHighlightData from "../../hooks/usePropertyHighlightData";
+import usePropertyNewData from "../../hooks/usePropertyNewData";
 
 const Homepage = () => {
     const slideOption = {
@@ -32,8 +32,8 @@ const Homepage = () => {
     };
 
     // Data
-    const { propertyHighlightArr } = useFetchAllPropertyHighlight();
-    const { propertyNewArr } = useFetchAllPropertyNew();
+    const { propertyHighlightArr } = usePropertyHighlightData();
+    const { propertyNewArr } = usePropertyNewData();
 
     return (
         <>

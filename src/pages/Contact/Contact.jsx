@@ -7,9 +7,6 @@ import "./Contact.css";
 // Components
 import Banner from "../../components/Banner/Banner";
 
-// Emailjs
-import emailjs from "@emailjs/browser";
-
 // Sweetalert 2
 import Swal from "sweetalert2";
 
@@ -21,13 +18,6 @@ const Contact = () => {
 
     const handleContact = (e) => {
         e.preventDefault();
-
-        emailjs.sendForm(
-            "service_rgiw3sh",
-            "template_6oi1nbt",
-            e.target,
-            "wNI4sprjKu_5ZAx8R"
-        );
 
         Swal.fire({
             title: "Enviado!",

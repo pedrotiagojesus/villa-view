@@ -31,7 +31,7 @@ const Header = () => {
             ref={headerRef}
         >
             <div className="container">
-                <Link className="navbar-brand" to="/villa-view">
+                <Link className="navbar-brand" to="/">
                     <img alt="Logotype" src={Logo} className="img-fluid" />
                 </Link>
                 <div className="d-flex align-items-center gap-2">
