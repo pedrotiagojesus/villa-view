@@ -2,7 +2,7 @@
 import "./Footer.css";
 
 // Assets
-import Logo from "./../../assets/logotype.png";
+import Logo from "./../../assets/img/logotype.png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {

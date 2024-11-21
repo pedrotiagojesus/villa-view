@@ -2,7 +2,7 @@
 import "./Banner.css";
 
 // Image
-import BannerImg from "./../../assets/banner.jpg";
+import BannerImg from "./../../assets/img/banner.jpg";
 
 const Banner = ({ title }) => {
     return (

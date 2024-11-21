@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import "./Header.css";
 
 // Assets
-import Logo from "./../../assets/logotype.png";
+import Logo from "./../../assets/img/logotype.png";
 
 const Header = () => {
     const [scroll, setScroll] = useState(false);

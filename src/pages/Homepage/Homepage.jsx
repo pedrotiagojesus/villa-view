@@ -4,7 +4,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "./Homepage.css";
 
 // Image
-import MainImage from "./../../assets/main-image.jpg";
+import MainImage from "./../../assets/img/main-image.jpg";
 
 // Components
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
