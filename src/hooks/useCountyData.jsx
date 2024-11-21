@@ -26,9 +26,14 @@ const useCountyData = (districtId) => {
             try {
                 const data = await getCounties(districtId);
 
-                if (JSON.stringify(data) !== JSON.stringify(countyArr)) {
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(countyArr)
+                ) {
                     setCountyArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setCountyArr([]);
                 }
             } catch (err) {
                 console.error(err);

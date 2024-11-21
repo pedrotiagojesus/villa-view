@@ -21,11 +21,14 @@ const usePropertyHighlightData = () => {
             try {
                 const data = await getPropertyHighlights();
                 if (
+                    data != null &&
                     JSON.stringify(data) !==
-                    JSON.stringify(propertyHighlightArr)
+                        JSON.stringify(propertyHighlightArr)
                 ) {
                     setPropertyHighlightArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setPropertyHighlightArr([]);
                 }
             } catch (err) {
                 console.error(err);

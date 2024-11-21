@@ -18,9 +18,15 @@ const usePropertyNewData = () => {
             setLoading(true);
             try {
                 const data = await getPropertyNews();
-                if (JSON.stringify(data) !== JSON.stringify(propertyNewArr)) {
+
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(propertyNewArr)
+                ) {
                     setPropertyNewArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setPropertyNewArr([]);
                 }
             } catch (err) {
                 console.error(err);

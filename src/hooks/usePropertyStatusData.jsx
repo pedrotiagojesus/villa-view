@@ -21,10 +21,13 @@ const usePropertyStatusData = () => {
             try {
                 const data = await getPropertyStatus();
                 if (
+                    data != null &&
                     JSON.stringify(data) !== JSON.stringify(propertyStatusArr)
                 ) {
                     setPropertyStatusArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setPropertyStatusArr([]);
                 }
             } catch (err) {
                 console.error(err);

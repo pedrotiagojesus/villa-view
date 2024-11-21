@@ -19,9 +19,14 @@ const usePropertyTypeData = () => {
             setLoading(true);
             try {
                 const data = await getPropertyTypes();
-                if (JSON.stringify(data) !== JSON.stringify(propertyTypeArr)) {
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(propertyTypeArr)
+                ) {
                     setPropertyTypeArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setPropertyTypeArr([]);
                 }
             } catch (err) {
                 console.error(err);

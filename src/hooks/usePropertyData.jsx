@@ -26,9 +26,14 @@ const usePropertyData = (propertyId) => {
             try {
                 const data = await getProperty(propertyId);
 
-                if (JSON.stringify(data) !== JSON.stringify(property)) {
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(property)
+                ) {
                     setProperty(data);
                     setCache(localStorageName, data);
+                } else {
+                    setProperty(null);
                 }
             } catch (err) {
                 console.error(err);
@@ -37,7 +42,7 @@ const usePropertyData = (propertyId) => {
             }
         };
 
-        if (isCacheStale(localStorageName)) {
+        if (isCacheStale(localStorageName) || property === null) {
             fetchProperty();
         } else {
             const initialCounties = getCache(localStorageName) || [];

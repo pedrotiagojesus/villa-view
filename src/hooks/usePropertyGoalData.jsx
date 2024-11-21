@@ -19,9 +19,15 @@ const usePropertyGoalData = () => {
             setLoading(true);
             try {
                 const data = await getPropertyGoals();
-                if (JSON.stringify(data) !== JSON.stringify(propertyGoalArr)) {
+
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(propertyGoalArr)
+                ) {
                     setPropertyGoalArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setPropertyGoalArr([]);
                 }
             } catch (err) {
                 console.error(err);

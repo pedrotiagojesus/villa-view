@@ -18,9 +18,14 @@ const useDistrictData = () => {
             setLoading(true);
             try {
                 const data = await getDistricts();
-                if (JSON.stringify(data) !== JSON.stringify(districtArr)) {
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(districtArr)
+                ) {
                     setDistrictArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setDistrictArr([]);
                 }
             } catch (err) {
                 console.error(err);

@@ -26,9 +26,14 @@ const useParishData = (countyId) => {
             try {
                 const data = await getParishes(countyId);
 
-                if (JSON.stringify(data) !== JSON.stringify(parishArr)) {
+                if (
+                    data != null &&
+                    JSON.stringify(data) !== JSON.stringify(parishArr)
+                ) {
                     setParishArr(data);
                     setCache(localStorageName, data);
+                } else {
+                    setParishArr([]);
                 }
             } catch (err) {
                 console.error(err);
